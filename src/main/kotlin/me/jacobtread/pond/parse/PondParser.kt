@@ -43,6 +43,7 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
                     "wait", "default_wait", "string_wait" -> parseWait(tokenValue)
                     "string" -> parseString()
                     "macro" -> parseMacro()
+                    "repeat" -> parseRepeat()
                 }
                 KEY_NAME -> parseCombo()
                 MACRO_INVOKE -> parseMacroInvoke()
@@ -83,6 +84,18 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
     private fun parseMacro() {
         val macroStruct: MacroStruct = tokenConsumer.consumeMacro()
         this.macroStructs[macroStruct.name] = macroStruct
+    }
+
+    private fun parseRepeat() {
+        val current: Token = tokenConsumer.current()
+        val amount: Int = tokenConsumer.consumeInt()
+        val children: LinkedList<Token> = tokenConsumer.consumeIndent(current.indent + 1)
+        val parser = PondParser(tokenConsumer)
+        parser.parse(children)
+        val instructions: List<Instruction> = parser.result()
+        for (i in 0 until amount) {
+            this.instructions.addAll(instructions)
+        }
     }
 
     private fun parseCombo() {

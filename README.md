@@ -21,7 +21,6 @@ With the Pond editor you can push the green run button in the top right corner t
 your code on your local computer without having to execute it on a ducky.
 
 ## 🐵 Upcoming Features
-- Repeat key word (For repeating a block of code nth amount of times)
 - Editor improvements (Hotkeys etc etc)
 - Case-insensitive key names
 
@@ -122,6 +121,16 @@ This can be then accessed with
 :MY_MACRO John Doe | Male | 18
 ```
 This will type out "Hello, John Doe you are Male and 18 years old"
+
+### ♻️ Repeating Blocks
+You can define repeating blocks of script these will repeat everything in its scope
+the specified amount of times you can define one like so
+```pond
+REPEAT 10
+  ALT F4
+  ..etc etc
+```
+This will press ALT + F4 10 times
 
 ## 📦 Building
 To build the jar you can run the following gradle command 

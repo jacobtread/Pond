@@ -116,6 +116,23 @@ abstract class TokenConsumer {
         }
     }
 
+
+    fun consumeIndent(expectedIndent: Int): LinkedList<Token> {
+        val children: LinkedList<Token> = LinkedList() // The children tokens of this macro
+        val ignoredIndents: IntArray = intArrayOf(WHITESPACE, NEW_LINE) // Tokens to ignore the indent of
+        while (!eot) { // Loop until end of tokens
+            val token: Token = consume(true) // Consume anything
+            if (token.tokenType == EOF_TYPE) break // No more tokens at end of file
+            // Ignore tokens that aren't on the same indent level
+            if (token.indent < expectedIndent && token.tokenType !in ignoredIndents) {
+                back() // Move back a token
+                break // Break out of children parsing
+            }
+            children.add(token) // Add the child token
+        }
+        return children
+    }
+
     fun consumeMacro(): MacroStruct {
         val nameToken: Token = consume(false) // Get the next non whitespace token
         if (nameToken.tokenType != IDENTIFIER) { // If it's not an identifier
@@ -131,19 +148,7 @@ abstract class TokenConsumer {
                 else -> throw UnexpectedTokenException(token.tokenType, IDENTIFIER, token.start) // Unexpected token
             }
         }
-        val children: LinkedList<Token> = LinkedList() // The children tokens of this macro
-        val expectedIndent: Int = nameToken.indent + 1 // All tokens should be indented one more left than the name
-        val ignoredIndents: IntArray = intArrayOf(WHITESPACE, NEW_LINE) // Tokens to ignore the indent of
-        while (!eot) { // Loop until end of tokens
-            val token: Token = consume(true) // Consume anything
-            if (token.tokenType == EOF_TYPE) break // No more tokens at end of file
-            // Ignore tokens that aren't on the same indent level
-            if (token.indent != expectedIndent && token.tokenType !in ignoredIndents) {
-                back() // Move back a token
-                break // Break out of children parsing
-            }
-            children.add(token) // Add the child token
-        }
+        val children: LinkedList<Token> = consumeIndent(nameToken.indent + 1)
         return MacroStruct(name, arguments, children)
     }
 

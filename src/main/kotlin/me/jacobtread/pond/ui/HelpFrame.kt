@@ -68,6 +68,14 @@ class HelpFrame : JFrame() {
         colorText(pane, "instruction it can be used like so", Color.LIGHT_GRAY)
         colorText(pane, "\nWAIT", keywordColor, bold = true)
         colorText(pane, " {DELAY}", numberColor)
+
+        colorText(pane, "\n\nREPEAT\n", keywordColor, 16, true)
+        colorText(pane, "The repeat keyword is used to reapeat a block\n", Color.LIGHT_GRAY)
+        colorText(pane, "of instructions nth times and can be indented this\n", Color.LIGHT_GRAY)
+        colorText(pane, "instruction it can be used like so", Color.LIGHT_GRAY)
+        colorText(pane, "\nREPEAT", keywordColor, bold = true)
+        colorText(pane, " {DELAY}\n", numberColor)
+        colorText(pane, "  {INSTRUCTIONS}\n", stringColor)
         pane.isEditable = false
         val scrollPane = JScrollPane(pane)
         scrollPane.preferredSize = Dimension(500, 500)

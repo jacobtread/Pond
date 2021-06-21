@@ -96,6 +96,7 @@ DefaultWaitKeyword      = "DEFAULT_WAIT"
 StringWaitKeyword       = "STRING_WAIT"
 StringKeyword           = "STRING"
 MacroKeyword            = "MACRO"
+RepeatKeyword           = "REPEAT"
 MacroInvoke             = ":"
 MacroDivier             = [^\\]"|"
 LineTerminator			= (\n)
@@ -114,6 +115,7 @@ InlineComment           = "/*".*"*/"
 %state MACRO_ARGS
 %state MACRO_INVOKE
 %state MACRO_ARGS_INVOKE
+%state REPEAT
 
 %%
 
@@ -122,6 +124,7 @@ InlineComment           = "/*".*"*/"
     {WaitKeyword}|{DefaultWaitKeyword}|{StringWaitKeyword}    { addToken(TokenTypes.KEYWORD); yybegin(WAIT); }
     {SetKeyword}                                              { addToken(TokenTypes.KEYWORD); yybegin(VARIABLE); }
     {MacroKeyword}                                            { addToken(TokenTypes.KEYWORD); yybegin(MACRO); }
+    {RepeatKeyword}                                           { addToken(TokenTypes.KEYWORD); yybegin(REPEAT); }
     {MacroInvoke}                                             { addToken(TokenTypes.MACRO_INVOKE); yybegin(MACRO_INVOKE); }
     {Identifier}                                              {
           if (Keyboard.INSTANCE.has(yytext())) {
@@ -148,6 +151,10 @@ InlineComment           = "/*".*"*/"
     {Identifier}                          { addToken(TokenTypes.IDENTIFIER); yybegin(MACRO_ARGS);}
 }
 
+<REPEAT> {
+    {Digits}                              { addToken(TokenTypes.LITERAL_NUMBER); yybegin(YYINITIAL); }
+}
+
 <MACRO_ARGS> {
     {Identifier}                          { addToken(TokenTypes.IDENTIFIER); }
 }
@@ -157,7 +164,7 @@ InlineComment           = "/*".*"*/"
 }
 
 <MACRO_ARGS_INVOKE> {
-    {VariableUsage}                           { addToken(TokenTypes.VARIABLE_USAGE); }
+    {VariableUsage}                       { addToken(TokenTypes.VARIABLE_USAGE); }
     {AnyButVar}                           { addToken(TokenTypes.LITERAL_STRING); }
     {MacroDivier}                         { addToken(TokenTypes.MACRO_DIVIDER); }
 }
