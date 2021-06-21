@@ -70,60 +70,13 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
     init {
         add(JMenu("File").apply {
             add(JMenuItem("Help", Icons["help"].icon()).apply {
-                addActionListener {
-                    SwingUtilities.invokeLater {
-                        HelpFrame().isVisible = true
-                    }
-                }
+                addActionListener { help() }
             })
             add(JMenuItem("New File", Icons["create"].icon()).apply {
-                addActionListener {
-                    saveIfOpen()
-                    saveItem.isEnabled = false
-                    editor.path = null
-                    editor.text = ""
-                }
+                addActionListener { new() }
             })
             add(JMenuItem("Open File", Icons["folder"].icon()).apply {
-                addActionListener {
-                   saveIfOpen()
-                    val result: Int = pondFileChooser.showOpenDialog(this@EditorMenuBar)
-                    if (result == JFileChooser.APPROVE_OPTION) {
-                        val file: File = pondFileChooser.selectedFile
-                        editor.path = file.toPath()
-                        saveItem.isEnabled = true
-                        editor.path?.let {
-                            if (Files.exists(it)) {
-                                if (Files.isDirectory(it)) {
-                                    JOptionPane.showMessageDialog(
-                                        null,
-                                        "Cannot open directories",
-                                        "Unable to open file",
-                                        JOptionPane.ERROR_MESSAGE
-                                    )
-                                } else {
-                                    try {
-                                        editor.text = String(Files.readAllBytes(it), StandardCharsets.UTF_8)
-                                    } catch (e: IOException) {
-                                        JOptionPane.showMessageDialog(
-                                            null,
-                                            "$e",
-                                            "Unable to open file",
-                                            JOptionPane.ERROR_MESSAGE
-                                        )
-                                    }
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(
-                                    null,
-                                    "Failed to open file that doesn't exist",
-                                    "Unable to open file",
-                                    JOptionPane.ERROR_MESSAGE
-                                )
-                            }
-                        }
-                    }
-                }
+                addActionListener { open() }
             })
 
             add(saveItem)
@@ -139,6 +92,53 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
         add(runButton)
     }
 
+    fun new() {
+        saveIfOpen()
+        saveItem.isEnabled = false
+        editor.path = null
+        editor.text = ""
+    }
+
+    fun open() {
+        saveIfOpen()
+        val result: Int = pondFileChooser.showOpenDialog(this@EditorMenuBar)
+        if (result == JFileChooser.APPROVE_OPTION) {
+            val file: File = pondFileChooser.selectedFile
+            editor.path = file.toPath()
+            saveItem.isEnabled = true
+            editor.path?.let {
+                if (Files.exists(it)) {
+                    if (Files.isDirectory(it)) {
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "Cannot open directories",
+                            "Unable to open file",
+                            JOptionPane.ERROR_MESSAGE
+                        )
+                    } else {
+                        try {
+                            editor.text = String(Files.readAllBytes(it), StandardCharsets.UTF_8)
+                        } catch (e: IOException) {
+                            JOptionPane.showMessageDialog(
+                                null,
+                                "$e",
+                                "Unable to open file",
+                                JOptionPane.ERROR_MESSAGE
+                            )
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Failed to open file that doesn't exist",
+                        "Unable to open file",
+                        JOptionPane.ERROR_MESSAGE
+                    )
+                }
+            }
+        }
+    }
+
     private fun saveIfOpen() {
         if (!editor.isEmpty()) {
             val result: Int = JOptionPane.showConfirmDialog(
@@ -150,7 +150,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
         }
     }
 
-    private fun save(path: Path?) {
+    fun save(path: Path?) {
         if (path == null) {
             val result: Int = pondFileChooser.showSaveDialog(this@EditorMenuBar)
             if (result == JFileChooser.APPROVE_OPTION) {
@@ -192,7 +192,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
         }
     }
 
-    private fun export() {
+    fun export() {
         val result: Int = binFileChooser.showSaveDialog(this@EditorMenuBar)
         if (result == JFileChooser.APPROVE_OPTION) {
             val file: File = binFileChooser.selectedFile
@@ -245,7 +245,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
         }
     }
 
-    private fun testRun() {
+    fun testRun() {
         if (running) {
             running = false
             runButton.icon = Icons["play"].icon()
@@ -287,6 +287,12 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
                     e.printStackTrace()
                 }
             }.apply { name = "Robot Thread"; start() }
+        }
+    }
+
+    fun help() {
+        SwingUtilities.invokeLater {
+            HelpFrame().isVisible = true
         }
     }
 

@@ -4,7 +4,6 @@ import me.jacobtread.pond.instr.ComboInstruction
 import me.jacobtread.pond.instr.Instruction
 import me.jacobtread.pond.instr.StringInstruction
 import me.jacobtread.pond.instr.WaitInstruction
-import me.jacobtread.pond.util.RobotTranslation
 
 object InternalMacros {
 

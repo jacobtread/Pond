@@ -79,12 +79,14 @@ class PondEditor : JFrame() {
             field = value
         }
 
+    val menuBar: EditorMenuBar = EditorMenuBar(this)
+
     init {
 
         val root = JPanel(BorderLayout())
         val scrollPane = RTextScrollPane(textArea)
 
-        root.add(EditorMenuBar(this), BorderLayout.PAGE_START)
+        root.add(menuBar, BorderLayout.PAGE_START)
         root.add(scrollPane, BorderLayout.CENTER)
 
         contentPane = root
@@ -92,6 +94,8 @@ class PondEditor : JFrame() {
         title = "Pond Editor"
         defaultCloseOperation = EXIT_ON_CLOSE
         pack()
+
+        KeyboardShortcuts(this)
     }
 
     fun isEmpty(): Boolean {
