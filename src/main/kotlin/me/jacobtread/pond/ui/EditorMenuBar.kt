@@ -69,6 +69,13 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
 
     init {
         add(JMenu("File").apply {
+            add(JMenuItem("Help", Icons["help"].icon()).apply {
+                addActionListener {
+                    SwingUtilities.invokeLater {
+                        HelpFrame().isVisible = true
+                    }
+                }
+            })
             add(JMenuItem("New File", Icons["create"].icon()).apply {
                 addActionListener {
                     saveIfOpen()
@@ -79,7 +86,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
             })
             add(JMenuItem("Open File", Icons["folder"].icon()).apply {
                 addActionListener {
-                    saveIfOpen()
+                   saveIfOpen()
                     val result: Int = pondFileChooser.showOpenDialog(this@EditorMenuBar)
                     if (result == JFileChooser.APPROVE_OPTION) {
                         val file: File = pondFileChooser.selectedFile
@@ -128,17 +135,8 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
                 addActionListener { export() }
             })
         })
-        val sideBox: Box = Box.createHorizontalBox()
-        sideBox.add(JMenuItem("Help").apply {
-            addActionListener {
-                SwingUtilities.invokeLater {
-                    HelpFrame().isVisible = true
-                }
-            }
-        })
-        sideBox.add(runButton)
         add(Box.createHorizontalGlue())
-        add(sideBox)
+        add(runButton)
     }
 
     private fun saveIfOpen() {

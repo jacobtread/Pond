@@ -75,7 +75,6 @@ class PondEditor : JFrame() {
             field = value
         }
 
-
     init {
         Keyboard._load()
 
