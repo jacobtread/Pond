@@ -13,19 +13,6 @@ class PondCompletionProvider : DefaultCompletionProvider() {
         basic("DEFAULT_WAIT", "Set the global wait delay")
         basic("REPEAT", "Repeating code block")
         basic("MACRO", "Macro block start")
-        addCompletion(ShorthandCompletion(this, "Exec", """
-            MACRO EXEC COMMAND
-              WAIT 500
-              GUI R
-              WAIT 1000
-              STRING cmd
-              WAIT 500
-              ENTER
-              WAIT 1000
-              STRING ${'$'}COMMAND
-              WAIT 100
-              ENTER
-        """.trimIndent()))
         Keyboard.keys().forEach {
             basic(it)
         }

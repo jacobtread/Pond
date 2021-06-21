@@ -2,6 +2,7 @@ package me.jacobtread.pond.parse
 
 import me.jacobtread.pond.instr.*
 import me.jacobtread.pond.parse.TokenTypes.*
+import me.jacobtread.pond.ui.InternalMacros
 import me.jacobtread.pond.util.InvalidArgumentsException
 import me.jacobtread.pond.util.Keyboard
 import me.jacobtread.pond.util.UndefinedMacroException
@@ -109,7 +110,6 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
         if (nameToken.tokenType != IDENTIFIER) {
             throw UnexpectedTokenException(nameToken.tokenType, IDENTIFIER, nameToken.start)
         }
-        println(nameToken.text)
         val name: String = nameToken.text
         if (name in macroStructs) {
             val macroStruct: MacroStruct = macroStructs[name]!!
@@ -126,7 +126,9 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
                 val instructions: List<Instruction> = macroStruct.compile(tokenConsumer, valueMap)
                 this.instructions.addAll(instructions)
             }
-        } else {
+        } else if (name in InternalMacros) {
+            this.instructions.addAll(InternalMacros[name])
+        }else {
             throw UndefinedMacroException(name, nameToken.start)
         }
     }

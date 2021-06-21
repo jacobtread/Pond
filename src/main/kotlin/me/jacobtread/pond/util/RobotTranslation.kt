@@ -63,6 +63,4 @@ object RobotTranslation {
         " " to "SPACE"
     )
 
-    private val v = KeyEvent.VK_COMMA
-
 }

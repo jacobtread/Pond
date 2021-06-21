@@ -132,6 +132,15 @@ REPEAT 10
 ```
 This will press ALT + F4 10 times
 
+### 🥣 Internal Macros
+I plan on adding lots of internal macros currently there is only one, and it is named cmd
+this macro opens a command prompt window. Note user defined macros take priority over 
+internal macros, so you can easily redefine cmd as something else.
+To access this macro you can use the macro invoke syntax
+```pond
+:cmd
+```
+
 ## 📦 Building
 To build the jar you can run the following gradle command 
 ```shell
