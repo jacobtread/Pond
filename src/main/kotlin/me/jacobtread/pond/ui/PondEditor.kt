@@ -18,6 +18,10 @@ import javax.swing.JPanel
 
 class PondEditor : JFrame() {
 
+    init {
+        Keyboard._load()
+    }
+
     var path: Path? = null
     val textArea: RSyntaxTextArea = RSyntaxTextArea(20, 50).apply {
         val tokenMakerFactory = TokenMakerFactory.getDefaultInstance() as AbstractTokenMakerFactory
@@ -76,7 +80,6 @@ class PondEditor : JFrame() {
         }
 
     init {
-        Keyboard._load()
 
         val root = JPanel(BorderLayout())
         val scrollPane = RTextScrollPane(textArea)

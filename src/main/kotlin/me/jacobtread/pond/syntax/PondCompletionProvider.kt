@@ -11,6 +11,8 @@ class PondCompletionProvider : DefaultCompletionProvider() {
         basic("STRING", "Type all the characters")
         basic("STRING_WAIT", "Set the global typing delay")
         basic("DEFAULT_WAIT", "Set the global wait delay")
+        basic("REPEAT", "Repeating code block")
+        basic("MACRO", "Macro block start")
         addCompletion(ShorthandCompletion(this, "Exec", """
             MACRO EXEC COMMAND
               WAIT 500
@@ -30,7 +32,7 @@ class PondCompletionProvider : DefaultCompletionProvider() {
     }
 
     private fun basic(value: String, desc: String? = null) {
-        addCompletion(BasicCompletion(this, value, desc))
+        addCompletion(CaselessCompletion(this, value, value, desc))
     }
 
 }
