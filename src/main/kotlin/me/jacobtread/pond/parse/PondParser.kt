@@ -2,7 +2,7 @@ package me.jacobtread.pond.parse
 
 import me.jacobtread.pond.instr.*
 import me.jacobtread.pond.parse.TokenTypes.*
-import me.jacobtread.pond.ui.InternalMacros
+import me.jacobtread.pond.util.InternalMacros
 import me.jacobtread.pond.util.InvalidArgumentsException
 import me.jacobtread.pond.util.Keyboard
 import me.jacobtread.pond.util.UndefinedMacroException

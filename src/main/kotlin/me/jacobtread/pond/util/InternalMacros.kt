@@ -1,4 +1,4 @@
-package me.jacobtread.pond.ui
+package me.jacobtread.pond.util
 
 import me.jacobtread.pond.instr.ComboInstruction
 import me.jacobtread.pond.instr.Instruction
@@ -8,7 +8,7 @@ import me.jacobtread.pond.util.RobotTranslation
 
 object InternalMacros {
 
-    val VALUES: Map<String, List<Instruction>> = mapOf(
+    private val VALUES: Map<String, List<Instruction>> = mapOf(
         "cmd" to listOf(
             WaitInstruction(500),
             ComboInstruction(listOf("GUI", "R")),
