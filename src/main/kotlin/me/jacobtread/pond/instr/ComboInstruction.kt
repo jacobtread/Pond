@@ -33,9 +33,7 @@ class ComboInstruction(private val keys: List<String>) : Instruction {
         for (key in keys) {
             val ref: KeyReference = Keyboard.get(key) ?: continue
             modifier = modifier or ref.mod
-            if (keyCode == UNSET_BYTE && ref.keyCode != NULL_BYTE) {
-                keyCode = ref.keyCode
-            }
+            keyCode = ref.keyCode
         }
         if (keyCode == UNSET_BYTE) {
             keyCode = NULL_BYTE
