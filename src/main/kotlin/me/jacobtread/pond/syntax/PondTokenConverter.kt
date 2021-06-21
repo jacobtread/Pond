@@ -36,14 +36,14 @@ class PondTokenConverter : TokenMakerBase() {
                 TokenTypes.KEYWORD -> addToken(Token.RESERVED_WORD)
                 TokenTypes.IDENTIFIER -> {
                     val previous: PondToken = lastToken()
-                    if (previous.tokenType == TokenTypes.KEYWORD && previous.text.toLowerCase() == "macro") {
+                    if (previous.tokenType == TokenTypes.KEYWORD && previous.text.lowercase() == "macro") {
                         addToken(Token.FUNCTION)
                     } else if (previous.tokenType == TokenTypes.MACRO_INVOKE) {
                         addToken(Token.FUNCTION)
                     } else {
                         val keywordToken: PondToken = lastToken(TokenTypes.KEYWORD)
                         if (keywordToken.tokenType == TokenTypes.KEYWORD) {
-                            val keyword: String = keywordToken.text.toLowerCase()
+                            val keyword: String = keywordToken.text.lowercase()
                             if (keyword == "set" || keyword == "macro") {
                                 addToken(Token.VARIABLE)
                                 val nextToken: PondToken = nextToken(TokenTypes.IDENTIFIER)

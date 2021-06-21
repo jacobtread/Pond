@@ -26,7 +26,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
                 return if (f.isDirectory) {
                     false
                 } else {
-                    f.name.toLowerCase().endsWith(".pond")
+                    f.name.lowercase().endsWith(".pond")
                 }
             }
 
@@ -44,7 +44,7 @@ class EditorMenuBar(private val editor: PondEditor) : JMenuBar() {
                 return if (f.isDirectory) {
                     false
                 } else {
-                    f.name.toLowerCase().endsWith(".bin")
+                    f.name.lowercase().endsWith(".bin")
                 }
             }
 

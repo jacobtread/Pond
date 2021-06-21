@@ -36,7 +36,7 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
         tokenConsumer.set(tokens) // Set the current token set in the consumer
         while (!tokenConsumer.eot) { // While no
             val token: Token = tokenConsumer.consume(false)
-            val tokenValue: String = token.text.toLowerCase()
+            val tokenValue: String = token.text.lowercase()
             when (token.tokenType) {
                 KEYWORD -> when (tokenValue) {
                     "set" -> parseVariable()

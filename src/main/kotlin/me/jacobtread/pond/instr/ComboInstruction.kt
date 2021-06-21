@@ -14,7 +14,7 @@ class ComboInstruction(private val keys: List<String>) : Instruction {
     override fun execute(roboto: Robot) {
         val trueKeys: HashMap<String, Int> = HashMap()
         for (it in keys) {
-            val stroke: KeyStroke = KeyStroke.getKeyStroke(RobotTranslation[it.toUpperCase()])
+            val stroke: KeyStroke = KeyStroke.getKeyStroke(RobotTranslation[it.uppercase()])
             roboto.keyPress(stroke.keyCode)
             trueKeys[it] = stroke.keyCode
             println("Pressed ${stroke.keyCode}")

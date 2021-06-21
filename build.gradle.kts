@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java")
-    kotlin("jvm") version "1.4.32"
+    kotlin("jvm") version "1.5.10"
 }
 group = "me.jacobtread.pond"
 version = "0.0.1"
@@ -19,7 +19,7 @@ dependencies {
     implementation("com.formdev:flatlaf:1.2")
     implementation("com.fifesoft:autocomplete:3.1.2")
     implementation("com.google.code.gson:gson:2.8.7")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.32")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
 }
 
 tasks.test {
@@ -27,7 +27,11 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        apiVersion = "1.5"
+        languageVersion = "1.5"
+        jvmTarget = "1.8"
+    }
 }
 
 sourceSets["main"].java {
@@ -40,6 +44,7 @@ val fatJar = task("fatJar", type = Jar::class) {
     manifest {
         attributes["Main-Class"] = "me.jacobtread.pond.Main"
     }
+
     from(configurations.compileClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks["jar"] as CopySpec)
 }

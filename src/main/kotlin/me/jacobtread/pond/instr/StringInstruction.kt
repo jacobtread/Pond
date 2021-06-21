@@ -22,7 +22,7 @@ class StringInstruction(private val text: String) : Instruction {
                 roboto.delay(keyWait)
             }
             if (uppercase) roboto.keyPress(KeyEvent.VK_SHIFT)
-            val value: String = key.toUpperCase()
+            val value: String = key.uppercase()
             val stroke: KeyStroke? = KeyStroke.getKeyStroke(RobotTranslation[value])
             if (stroke != null) {
                 roboto.keyPress(stroke.keyCode)
