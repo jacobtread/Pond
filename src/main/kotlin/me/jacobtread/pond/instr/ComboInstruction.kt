@@ -28,16 +28,17 @@ class ComboInstruction(private val keys: List<String>) : Instruction {
     }
 
     override fun encode(output: EncoderBuffer) {
-        var modifier: Int = NULL_BYTE
-        var keyCode: Int = -1
+        var modifier: Int = UNSET_BYTE
+        var keyCode: Int = UNSET_BYTE
         for (key in keys) {
             val ref: KeyReference = Keyboard.get(key) ?: continue
-            modifier = modifier or ref.mod
+            modifier = if (modifier == UNSET_BYTE) {
+                ref.mod
+            } else modifier or ref.mod
             keyCode = ref.keyCode
         }
-        if (keyCode == UNSET_BYTE) {
-            keyCode = NULL_BYTE
-        }
+        if (keyCode == UNSET_BYTE) keyCode = NULL_BYTE
+        if (modifier == UNSET_BYTE) modifier = NULL_BYTE
         output += keyCode
         output += modifier
     }
