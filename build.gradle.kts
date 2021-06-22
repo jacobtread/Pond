@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm") version "1.5.10"
 }
 group = "me.jacobtread.pond"
-version = "0.0.2"
+version = "0.0.3"
 
 
 repositories {
