@@ -12,6 +12,7 @@ import me.jacobtread.pond.util.Keyboard;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>PondLexer.flex</tt>
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class PondLexer {
 
   /** This character denotes the end of file */
@@ -735,99 +736,99 @@ public class PondLexer {
           case 21: break;
           case 2: 
             { addToken(TokenTypes.WHITESPACE);
-            } 
+            }
             // fall through
           case 22: break;
           case 3: 
             { if (Keyboard.INSTANCE.has(yytext())) {
               addToken(TokenTypes.KEY_NAME);
           } else { addToken(TokenTypes.KEY_INVALID); }
-            } 
+            }
             // fall through
           case 23: break;
           case 4: 
             { addToken(TokenTypes.MACRO_INVOKE); yybegin(MACRO_INVOKE);
-            } 
+            }
             // fall through
           case 24: break;
           case 5: 
             { addToken(TokenTypes.NEW_LINE); yybegin(YYINITIAL);
-            } 
+            }
             // fall through
           case 25: break;
           case 6: 
             { addToken(TokenTypes.COMMENT);
-            } 
+            }
             // fall through
           case 26: break;
           case 7: 
             { addToken(TokenTypes.LITERAL_NUMBER);
-            } 
+            }
             // fall through
           case 27: break;
           case 8: 
             { addToken(TokenTypes.IDENTIFIER); yybegin(STRING);
-            } 
+            }
             // fall through
           case 28: break;
           case 9: 
             { addToken(TokenTypes.LITERAL_STRING);
-            } 
+            }
             // fall through
           case 29: break;
           case 10: 
             { addToken(TokenTypes.LITERAL_NUMBER); yybegin(YYINITIAL);
-            } 
+            }
             // fall through
           case 30: break;
           case 11: 
             { addToken(TokenTypes.IDENTIFIER); yybegin(MACRO_ARGS);
-            } 
+            }
             // fall through
           case 31: break;
           case 12: 
             { addToken(TokenTypes.IDENTIFIER);
-            } 
+            }
             // fall through
           case 32: break;
           case 13: 
             { addToken(TokenTypes.IDENTIFIER); yybegin(MACRO_ARGS_INVOKE);
-            } 
+            }
             // fall through
           case 33: break;
           case 14: 
             { addToken(TokenTypes.VARIABLE_USAGE);
-            } 
+            }
             // fall through
           case 34: break;
           case 15: 
             { addToken(TokenTypes.MACRO_DIVIDER);
-            } 
+            }
             // fall through
           case 35: break;
           case 16: 
             { addToken(TokenTypes.KEYWORD); yybegin(VARIABLE);
-            } 
+            }
             // fall through
           case 36: break;
           case 17: 
             { addToken(TokenTypes.KEYWORD); yybegin(WAIT);
-            } 
+            }
             // fall through
           case 37: break;
           case 18: 
             { addToken(TokenTypes.KEYWORD); yybegin(MACRO);
-            } 
+            }
             // fall through
           case 38: break;
           case 19: 
             { addToken(TokenTypes.KEYWORD); yybegin(STRING);
-            } 
+            }
             // fall through
           case 39: break;
           case 20: 
             { addToken(TokenTypes.KEYWORD); yybegin(REPEAT);
-            } 
+            }
             // fall through
           case 40: break;
           default:

@@ -2,15 +2,10 @@ package me.jacobtread.pond.parse
 
 import me.jacobtread.pond.instr.*
 import me.jacobtread.pond.parse.TokenTypes.*
-import me.jacobtread.pond.util.InternalMacros
-import me.jacobtread.pond.util.InvalidArgumentsException
-import me.jacobtread.pond.util.Keyboard
-import me.jacobtread.pond.util.UndefinedMacroException
-import me.jacobtread.pond.util.UnexpectedTokenException
+import me.jacobtread.pond.util.*
 import java.util.*
-import kotlin.collections.HashMap
 
-class PondParser(tokenConsumer: TokenConsumer? = null) {
+class PondParser(tokenConsumer: TokenConsumer? = null, private val parent: PondParser? = null) {
 
     private val tokenConsumer: TokenConsumer =
         tokenConsumer ?: DefaultTokenConsumer(this) // Use a default token consumer if none provided
@@ -57,6 +52,7 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
         return instructions
     }
 
+
     private fun parseVariable() {
         val nameToken: Token = tokenConsumer.consume(false)
         if (nameToken.tokenType != IDENTIFIER) {
@@ -91,7 +87,7 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
         val current: Token = tokenConsumer.current()
         val amount: Int = tokenConsumer.consumeInt()
         val children: LinkedList<Token> = tokenConsumer.consumeIndent(current.indent + 1)
-        val parser = PondParser(tokenConsumer)
+        val parser = PondParser(tokenConsumer, this)
         parser.parse(children)
         val instructions: List<Instruction> = parser.result()
         for (i in 0 until amount) {
@@ -105,30 +101,45 @@ class PondParser(tokenConsumer: TokenConsumer? = null) {
         this.instructions.add(ComboInstruction(keys))
     }
 
+    private fun hasMacroStruct(name: String): Boolean {
+        return name in macroStructs || (parent != null && name in parent.macroStructs)
+    }
+
+    private fun getMacroStruct(name: String): MacroStruct {
+        return if (name in macroStructs) {
+            macroStructs[name]!!
+        } else {
+            return parent?.macroStructs?.get(name)!!
+        }
+    }
+
     private fun parseMacroInvoke() {
         val nameToken: Token = tokenConsumer.consume(false)
         if (nameToken.tokenType != IDENTIFIER) {
             throw UnexpectedTokenException(nameToken.tokenType, IDENTIFIER, nameToken.start)
         }
         val name: String = nameToken.text
-        if (name in macroStructs) {
-            val macroStruct: MacroStruct = macroStructs[name]!!
+        if (hasMacroStruct(name)) {
+            val macroStruct: MacroStruct = getMacroStruct(name)
             val macroArguments: List<String> = macroStruct.arguments
             val arguments: List<String> = tokenConsumer.consumeMacroArgs()
+            val valueMap: HashMap<String, String> = HashMap()
             if (arguments.size != macroArguments.size) {
-                throw InvalidArgumentsException(arguments.size, macroArguments.size, nameToken.start)
+                for (it in arguments) {
+                    if (it.isBlank()) continue
+                    else throw InvalidArgumentsException(arguments.size, macroArguments.size, nameToken.start)
+                }
             } else {
-                val valueMap: HashMap<String, String> = HashMap()
                 macroArguments.forEachIndexed { index, variableName ->
                     val value: String = arguments[index]
                     valueMap[variableName] = value
                 }
-                val instructions: List<Instruction> = macroStruct.compile(tokenConsumer, valueMap)
-                this.instructions.addAll(instructions)
             }
+            val instructions: List<Instruction> = macroStruct.compile(tokenConsumer, valueMap)
+            this.instructions.addAll(instructions)
         } else if (name in InternalMacros) {
             this.instructions.addAll(InternalMacros[name])
-        }else {
+        } else {
             throw UndefinedMacroException(name, nameToken.start)
         }
     }
