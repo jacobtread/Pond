@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm") version "1.5.10"
 }
 group = "me.jacobtread.pond"
-version = "0.0.3"
+version = "0.0.4"
 
 
 repositories {
@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test-junit"))
-    // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation("com.fifesoft:rsyntaxtextarea:3.1.3")
     implementation("com.formdev:flatlaf:1.2")
     implementation("com.fifesoft:autocomplete:3.1.2")
@@ -44,7 +43,6 @@ val fatJar = task("fatJar", type = Jar::class) {
     manifest {
         attributes["Main-Class"] = "me.jacobtread.pond.Main"
     }
-
     from(configurations.compileClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks["jar"] as CopySpec)
 }
