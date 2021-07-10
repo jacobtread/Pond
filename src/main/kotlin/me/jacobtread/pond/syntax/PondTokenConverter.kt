@@ -16,6 +16,23 @@ class PondTokenConverter : TokenMakerBase() {
     private val macros: ArrayList<String> = ArrayList()
     private var seg: Segment = Segment()
     private var startOffset: Int = 0
+    private val indentWords: Array<String> = arrayOf("repeat", "macro")
+
+    override fun getShouldIndentNextLineAfter(unused: Token?): Boolean {
+        if (tokens.isNotEmpty()) {
+            for (i in tokens.indices) {
+                val token: PondToken = tokens[i]
+                if (token.tokenType != TokenTypes.WHITESPACE) {
+                    if (token.tokenType == TokenTypes.KEYWORD) {
+                        val text: String = token.text.lowercase()
+                        return text in indentWords
+                    }
+                    return false
+                }
+            }
+        }
+        return false
+    }
 
     override fun getTokenList(seg: Segment, initialTokenType: Int, startOffset: Int): Token {
         resetTokenList()
