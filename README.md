@@ -5,6 +5,9 @@
 
 The improved scripting language for USB rubber duckies
 
+> Due to improvements in the existing ducky script by Hak5 this may no longer be
+> a better alternative
+
 ## 🏌️ What is pond?
 
 Pond as a language is the improved big brother of DuckyScript with lots of new features and new syntax elements such
